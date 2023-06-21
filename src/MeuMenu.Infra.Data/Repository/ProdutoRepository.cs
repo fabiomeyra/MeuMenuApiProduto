@@ -2,6 +2,7 @@
 using MeuMenu.Domain.Models;
 using MeuMenu.Infra.Data.Context;
 using MeuMenu.Infra.Data.Repository.Base;
+using Microsoft.EntityFrameworkCore;
 
 namespace MeuMenu.Infra.Data.Repository;
 
@@ -14,5 +15,12 @@ public class ProdutoRepository : Repository<Produto, MeuMenuDbContext>, IProduto
     {
         DbSet.Remove(new Produto { ProdutoId = produtoId });
         await SaveChanges();
+    }
+
+    public override async Task<List<Produto>> ObterTodos()
+    {
+        return await Db.Produtos.AsNoTracking()
+            .Include(c => c.Categoria)
+            .ToListAsync();
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace MeuMenu.Application.ViewModels;
+﻿using MeuMenu.Domain.Models;
+
+namespace MeuMenu.Application.ViewModels;
 
 public class ProdutoViewModel
 {
@@ -11,4 +13,6 @@ public class ProdutoViewModel
     public int? ProdutoCalorias { get; set; }
     public string? ProdutoAlergias { get; set; }
     public int CategoriaId { get; set; }
+
+    public CategoriaViewModel Categoria { get; set; }
 }

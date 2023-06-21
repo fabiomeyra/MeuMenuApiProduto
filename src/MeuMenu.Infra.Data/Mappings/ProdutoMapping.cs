@@ -40,6 +40,10 @@ public class ProdutoMapping : IEntityTypeConfiguration<Produto>
             .IsRequired()
             .HasColumnType("int");
 
+        builder.HasOne(p => p.Categoria)
+            .WithMany(c => c.Produtos)
+            .HasForeignKey(f => f.CategoriaId);
+
         builder.ToTable("Produto", "Produto");
     }
 }

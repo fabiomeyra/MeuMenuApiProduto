@@ -12,6 +12,9 @@ public class Produto
     public string? ProdutoAlergias { get; set; }
     public int CategoriaId { get; set; }
 
+    /* EF Relation */
+    public Categoria Categoria { get; set; }
+
     public void GerarId()
     {
         ProdutoId = Guid.NewGuid();
