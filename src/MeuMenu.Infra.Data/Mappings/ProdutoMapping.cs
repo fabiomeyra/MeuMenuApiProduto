@@ -36,6 +36,10 @@ public class ProdutoMapping : IEntityTypeConfiguration<Produto>
         builder.Property(c => c.ProdutoAlergias)
             .HasColumnType("varchar(200)");
 
+        builder.Property(c => c.CategoriaId)
+            .IsRequired()
+            .HasColumnType("int");
+
         builder.ToTable("Produto", "Produto");
     }
 }

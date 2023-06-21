@@ -10,4 +10,5 @@ public class ProdutoViewModel
     public string ProdutoIngredientes { get; set; }
     public int? ProdutoCalorias { get; set; }
     public string? ProdutoAlergias { get; set; }
+    public int CategoriaId { get; set; }
 }
