@@ -13,7 +13,7 @@ public class Produto
     public int CategoriaId { get; set; }
 
     /* EF Relation */
-    public Categoria Categoria { get; set; }
+    public Categoria? Categoria { get; set; }
 
     public void GerarId()
     {

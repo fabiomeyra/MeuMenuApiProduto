@@ -32,6 +32,8 @@ public class ProdutoAppService : IProdutoAppService
     {
         var produto = _mapper.Map<Produto>(produtoViewModel);
 
+        produto.Categoria = null;
+
         produto = await _produtoService.AtualizarProdutoAsync(produto);
 
         return _mapper.Map<ProdutoViewModel>(produto);
