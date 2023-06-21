@@ -6,8 +6,8 @@ public interface IProdutoAppService
 {
     Task<ProdutoViewModel> AdicionarProdutoAsync(ProdutoViewModel produtoViewModel);
     Task<ProdutoViewModel> AtualizarProdutoAsync(ProdutoViewModel produtoViewModel);
-    Task ExcluirProdutoAsync(Guid produtoViewModelId);
-    Task<ProdutoViewModel> ObterProdutoPorIdAsync(Guid produtoViewModelId);
+    Task ExcluirProdutoAsync(Guid produtoId);
+    Task<ProdutoViewModel?> ObterProdutoPorIdAsync(Guid produtoId);
     Task<IEnumerable<ProdutoViewModel>> ObterTodosProdutosAsync();
     Task<IEnumerable<ProdutoViewModel>> ObterProdutosAtivosAsync();
 }

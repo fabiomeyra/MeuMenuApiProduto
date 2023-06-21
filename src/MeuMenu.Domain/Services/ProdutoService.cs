@@ -32,11 +32,11 @@ public class ProdutoService : IProdutoService
         await _produtoRepository.Remover(produtoId);
     }
 
-    public async Task<Produto> ObterProdutoPorIdAsync(Guid produtoId)
+    public async Task<Produto?> ObterProdutoPorIdAsync(Guid produtoId)
     {
         var result = await _produtoRepository.Buscar(p => p.ProdutoId == produtoId);
 
-        return result.FirstOrDefault() ?? new Produto();
+        return result.FirstOrDefault() ?? null;
     }
 
     public async Task<IEnumerable<Produto>> ObterTodosProdutosAsync()

@@ -36,6 +36,6 @@ public class ProdutoMapping : IEntityTypeConfiguration<Produto>
         builder.Property(c => c.ProdutoAlergias)
             .HasColumnType("varchar(200)");
 
-        builder.ToTable("Produto");
+        builder.ToTable("Produto", "Produto");
     }
 }
