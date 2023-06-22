@@ -5,13 +5,11 @@ using MeuMenu.Domain.Services;
 using MeuMenu.Infra.Data.Context;
 using MeuMenu.Infra.Data.Repository;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using System.Collections.Generic;
 using MeuMenu.Application.AppServices;
 using MeuMenu.Application.Interfaces;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Rewrite;
+using MeuMenu.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,6 +46,8 @@ builder.Services.AddScoped<ICategoriaAppService, CategoriaAppService>();
 builder.Services.AddScoped<IProdutoService, ProdutoService>();
 builder.Services.AddScoped<ICategoriaService, CategoriaService>();
 
+builder.Services.AddApplicationInsightsTelemetry();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -60,6 +60,8 @@ app.UseSwaggerUI();
 var options = new RewriteOptions();
 options.AddRedirect("^$", "swagger");
 app.UseRewriter(options);
+
+app.UseMiddleware<RequestTelemetryMiddleware>();
 
 app.UseHttpsRedirection();
 
