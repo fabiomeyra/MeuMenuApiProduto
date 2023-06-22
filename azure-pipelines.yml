@@ -25,3 +25,11 @@ steps:
     inputs:
       PathtoPublish: '$(Build.ArtifactStagingDirectory)'
       ArtifactName: 'drop'
+
+  - task: AzureRmWebAppDeployment@4
+    displayName: 'Implantar no Azure App Service'
+    inputs:
+      azureSubscription: '8b6f2f6e-284c-48d1-9cfd-b88d0b536777'
+      appType: 'webApp'
+      WebAppName: 'api-produto'
+      package: '$(Build.ArtifactStagingDirectory)/**/*.zip'
