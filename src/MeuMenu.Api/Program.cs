@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using MeuMenu.Application.AppServices;
 using MeuMenu.Application.Interfaces;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Rewrite;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,11 +51,15 @@ builder.Services.AddScoped<ICategoriaService, CategoriaService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+//if (app.Environment.IsDevelopment())
+//{
+app.UseSwagger();
+app.UseSwaggerUI();
+//}
+
+var options = new RewriteOptions();
+options.AddRedirect("^$", "swagger");
+app.UseRewriter(options);
 
 app.UseHttpsRedirection();
 
