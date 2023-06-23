@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
 using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
+using MeuMenu.Application.Extensions;
 using MeuMenu.Application.Interfaces;
 using MeuMenu.Application.ViewModels;
 using MeuMenu.Domain.Interfaces.Services;
 using MeuMenu.Domain.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 
 namespace MeuMenu.Application.AppServices;
 
@@ -11,47 +15,50 @@ public class ProdutoAppService : IProdutoAppService
 {
     private readonly IProdutoService _produtoService;
     private readonly IMapper _mapper;
+    private readonly IConfiguration _configuration;
 
-    public ProdutoAppService(IProdutoService produtoService, IMapper mapper)
+    public ProdutoAppService(IProdutoService produtoService, IMapper mapper, IConfiguration configuration)
     {
         _produtoService = produtoService;
         _mapper = mapper;
+        _configuration = configuration;
     }
 
-    public async Task<ProdutoViewModel> AdicionarProdutoAsync(ProdutoViewModel produtoViewModel)
+    public async Task<ProdutoViewModel> AdicionarProdutoAsync(ProdutoAddViewModel produtoAddViewModel)
     {
-        var produto = _mapper.Map<Produto>(produtoViewModel);
-
-        produto.GerarId();
-
-        var fileName = Guid.NewGuid() + ".jpg";
-        var imgbytes = Convert.FromBase64String("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");
-
-        var blobClient = new BlobClient("DefaultEndpointsProtocol=https;AccountName=posmeumenu;AccountKey=YMZlxCX5I99XHPL/y1F4ebNU3BIDPx/n/5PPvNkIZCFSoNPhe6VpaIL2cZZkSG4vqqDI84vPoB1X+ASt6FOTjg==;EndpointSuffix=core.windows.net", "imagens", fileName);
-
-        using (var stream = new MemoryStream(imgbytes))
+        try
         {
-            await blobClient.UploadAsync(stream);
+            if (produtoAddViewModel.ProdutoImagem is null) throw new Exception("Imagem obrigatória!");
+
+            var produto = _mapper.Map<Produto>(produtoAddViewModel);
+
+            produto.GerarId();
+
+            produto.ProdutoImagem = await EnviarImagemAzure(produtoAddViewModel);
+
+            produto = await _produtoService.AdicionarProdutoAsync(produto);
+
+            return _mapper.Map<ProdutoViewModel>(produto);
         }
-
-        var url = blobClient.Uri.AbsoluteUri;
-
-        produto = await _produtoService.AdicionarProdutoAsync(produto);
-
-        return _mapper.Map<ProdutoViewModel>(produto);
+        catch (Exception e)
+        {
+            // TODO: add msgs de tratamento de erro
+            throw;
+        }
     }
 
-    public async Task<ProdutoViewModel> AtualizarProdutoAsync(ProdutoViewModel produtoViewModel)
+    public async Task<ProdutoViewModel> AtualizarProdutoAsync(ProdutoAddViewModel produtoAddViewModel)
     {
-        var produto = _mapper.Map<Produto>(produtoViewModel);
+        var produto = _mapper.Map<Produto>(produtoAddViewModel);
 
-        produto.Categoria = null;
+        if (produtoAddViewModel.ProdutoImagem is not null)
+            produto.ProdutoImagem = await EnviarImagemAzure(produtoAddViewModel);
 
         produto = await _produtoService.AtualizarProdutoAsync(produto);
 
         return _mapper.Map<ProdutoViewModel>(produto);
     }
-
+    
     public async Task ExcluirProdutoAsync(Guid produtoId)
     {
         await _produtoService.ExcluirProdutoAsync(produtoId);
@@ -73,5 +80,20 @@ public class ProdutoAppService : IProdutoAppService
     {
         var produtos = await _produtoService.ObterProdutosAtivosAsync();
         return _mapper.Map<IEnumerable<ProdutoViewModel>>(produtos);
+    }
+
+    private async Task<string> EnviarImagemAzure(ProdutoAddViewModel produtoAddViewModel)
+    {
+        var fileName = Guid.NewGuid() + ".jpg";
+        var imgbytes = await produtoAddViewModel.ProdutoImagem.ConvertIFormFileToByteArray();
+
+        var blobClient = new BlobClient(_configuration["Azure:ArmazenamentoImagens"], _configuration["Azure:NomePastaImagens"], fileName);
+
+        using (var stream = new MemoryStream(imgbytes))
+        {
+            await blobClient.UploadAsync(stream, new BlobUploadOptions { HttpHeaders = new BlobHttpHeaders { ContentType = "image/jpeg" } });
+        }
+
+        return blobClient.Uri.AbsoluteUri;
     }
 }
