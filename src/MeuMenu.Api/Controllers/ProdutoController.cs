@@ -32,17 +32,17 @@ namespace MeuMenu.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProdutoViewModel>> Adicionar(ProdutoViewModel produtoViewModel)
+        public async Task<ActionResult<ProdutoViewModel>> Adicionar([FromForm]ProdutoAddViewModel produtoAddViewModel)
         {
-            produtoViewModel = await _produtoAppService.AdicionarProdutoAsync(produtoViewModel);
+            var produtoViewModel = await _produtoAppService.AdicionarProdutoAsync(produtoAddViewModel);
 
             return Ok(produtoViewModel);
         }
 
         [HttpPut("{id:guid}")]
-        public async Task<ActionResult<ProdutoViewModel>> Atualizar(Guid id, ProdutoViewModel produtoViewModel)
+        public async Task<ActionResult<ProdutoViewModel>> Atualizar(Guid id, [FromForm]ProdutoAddViewModel produtoAddViewModel)
         {
-            if (id != produtoViewModel.ProdutoId)
+            if (id != produtoAddViewModel.ProdutoId)
             {
                 //NotificarErro("O id informado não é o mesmo que foi passado na query");
                 //return CustomResponse(fornecedorViewModel);
@@ -51,7 +51,7 @@ namespace MeuMenu.Api.Controllers
 
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            produtoViewModel = await _produtoAppService.AtualizarProdutoAsync(produtoViewModel);
+            var produtoViewModel = await _produtoAppService.AtualizarProdutoAsync(produtoAddViewModel);
 
             return Ok(produtoViewModel);
         }

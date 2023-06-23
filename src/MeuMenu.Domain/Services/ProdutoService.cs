@@ -34,9 +34,7 @@ public class ProdutoService : IProdutoService
 
     public async Task<Produto?> ObterProdutoPorIdAsync(Guid produtoId)
     {
-        var result = await _produtoRepository.Buscar(p => p.ProdutoId == produtoId);
-
-        return result.FirstOrDefault() ?? null;
+        return await _produtoRepository.ObterProdutoPorIdAsync(produtoId);
     }
 
     public async Task<IEnumerable<Produto>> ObterTodosProdutosAsync()

@@ -9,6 +9,7 @@ public class AutoMapperProfile : Profile
     public AutoMapperProfile()
     {
         CreateMap<Produto, ProdutoViewModel>().ReverseMap();
+        CreateMap<Produto, ProdutoAddViewModel>().ReverseMap();
         CreateMap<Categoria, CategoriaViewModel>().ReverseMap();
     }
 }

@@ -23,4 +23,12 @@ public class ProdutoRepository : Repository<Produto, MeuMenuDbContext>, IProduto
             .Include(c => c.Categoria)
             .ToListAsync();
     }
+
+    public async Task<Produto?> ObterProdutoPorIdAsync(Guid produtoId)
+    {
+        return await Db.Produtos
+            .Where(p => p.ProdutoId == produtoId)
+            .Include(c => c.Categoria)
+            .FirstOrDefaultAsync();
+    }
 }
