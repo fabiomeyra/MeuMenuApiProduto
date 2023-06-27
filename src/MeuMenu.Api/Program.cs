@@ -10,6 +10,8 @@ using MeuMenu.Application.Interfaces;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Rewrite;
 using MeuMenu.Api.Middlewares;
+using MeuMenu.Domain.Interfaces.Notificador;
+using MeuMenu.Domain.Notificador;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +38,8 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
+builder.Services.AddScoped<INotificador, Notificador>();
+
 builder.Services.AddScoped<MeuMenuDbContext>();
 builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
 builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
@@ -56,6 +60,9 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 //}
+
+// Adicionando Middleware para tratar exceções
+app.UseExceptionHandlerMiddleware();
 
 var options = new RewriteOptions();
 options.AddRedirect("^$", "swagger");
