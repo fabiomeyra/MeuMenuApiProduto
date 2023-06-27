@@ -1,7 +1,9 @@
 ﻿using MeuMenu.Application.AppServices;
 using MeuMenu.Application.Interfaces;
+using MeuMenu.Domain.Interfaces.Notificador;
 using MeuMenu.Domain.Interfaces.Repository;
 using MeuMenu.Domain.Interfaces.Services;
+using MeuMenu.Domain.Notificador;
 using MeuMenu.Domain.Services;
 using MeuMenu.Infra.Data.Context;
 using MeuMenu.Infra.Data.Repository;
@@ -21,5 +23,7 @@ public static class DependencyInjectionConfiguration
         
         service.AddScoped<IProdutoService, ProdutoService>();
         service.AddScoped<ICategoriaService, CategoriaService>();
+
+        service.AddScoped<INotificador, Notificador>();
     }
 }

@@ -34,8 +34,6 @@ builder.Services.AddSwaggerConfiguration();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 builder.Services.AddDependencyInjectionConfiguration();
-builder.Services.AddScoped<INotificador, Notificador>();
-
 
 builder.Services.AddApplicationInsightsTelemetry();
 
