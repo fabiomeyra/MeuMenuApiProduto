@@ -76,6 +76,13 @@ public class ProdutoAppService : IProdutoAppService
         return _mapper.Map<IEnumerable<ProdutoViewModel>>(produtos);
     }
 
+    public async Task<IEnumerable<ProdutoViewModel>> ObterProdutosPorCategoriaAsync(int categoriaId)
+    {
+        var produtos = await _produtoService.ObterTodosProdutosAsync();
+        produtos = produtos.Where(p => p.CategoriaId == categoriaId);
+        return _mapper.Map<IEnumerable<ProdutoViewModel>>(produtos);
+    }
+
     public async Task<IEnumerable<ProdutoViewModel>> ObterProdutosAtivosAsync()
     {
         var produtos = await _produtoService.ObterProdutosAtivosAsync();
