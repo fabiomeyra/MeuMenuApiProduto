@@ -27,9 +27,10 @@ namespace MeuMenu.Api.Controllers
         }
 
         [HttpGet("obter-por-categoria/{categoriaId:int}")]
-        public async Task<IEnumerable<ProdutoViewModel>> ObterTodos(int categoriaId)
+        public async Task<IActionResult> ObterTodos(int categoriaId)
         {
-            return await _produtoAppService.ObterProdutosPorCategoriaAsync(categoriaId);
+            var retorno = await _produtoAppService.ObterProdutosPorCategoriaAsync(categoriaId);
+            return RespostaPadrao(retorno);
         }
 
         [HttpGet("{id:guid}")]
