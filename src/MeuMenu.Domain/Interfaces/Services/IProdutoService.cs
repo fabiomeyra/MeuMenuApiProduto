@@ -10,4 +10,5 @@ public interface IProdutoService
     Task<Produto?> ObterProdutoPorIdAsync(Guid produtoId);
     Task<IEnumerable<Produto>> ObterTodosProdutosAsync();
     Task<IEnumerable<Produto>> ObterProdutosAtivosAsync();
+    Task<Produto?> BuscarProdutoValorAsync(Guid produtoId);
 }

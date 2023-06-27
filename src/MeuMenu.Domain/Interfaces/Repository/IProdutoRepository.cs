@@ -6,4 +6,5 @@ public interface IProdutoRepository : IRepository<Produto>
 {
     Task Remover(Guid produtoId);
     Task<Produto?> ObterProdutoPorIdAsync(Guid produtoId);
+    Task<Produto?> BuscarProdutoValorAsync(Guid produtoId);
 }

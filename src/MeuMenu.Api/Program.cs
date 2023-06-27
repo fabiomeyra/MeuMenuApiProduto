@@ -11,6 +11,8 @@ using MeuMenu.Application.Interfaces;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Rewrite;
 using MeuMenu.Api.Middlewares;
+using MeuMenu.Domain.Interfaces.Notificador;
+using MeuMenu.Domain.Notificador;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +34,8 @@ builder.Services.AddSwaggerConfiguration();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 builder.Services.AddDependencyInjectionConfiguration();
+builder.Services.AddScoped<INotificador, Notificador>();
+
 
 builder.Services.AddApplicationInsightsTelemetry();
 
@@ -50,6 +54,9 @@ var app = builder.Build();
 app.UseSwaggerConfiguration();
 
 app.UseCors();
+
+// Adicionando Middleware para tratar exceções
+app.UseExceptionHandlerMiddleware();
 
 var options = new RewriteOptions();
 options.AddRedirect("^$", "swagger");
