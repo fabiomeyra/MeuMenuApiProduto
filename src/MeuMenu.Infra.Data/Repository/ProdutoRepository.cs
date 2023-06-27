@@ -31,4 +31,18 @@ public class ProdutoRepository : Repository<Produto, MeuMenuDbContext>, IProduto
             .Include(c => c.Categoria)
             .FirstOrDefaultAsync();
     }
+
+    public async Task<Produto?> BuscarProdutoValorAsync(Guid produtoId)
+    {
+        var produto = await Db.Produtos
+            .Where(x => x.ProdutoId == produtoId)
+            .Select(x => new Produto
+            {
+                ProdutoId = x.ProdutoId,
+                ProdutoValor = x.ProdutoValor
+            })
+            .FirstOrDefaultAsync();
+
+        return produto;
+    }
 }

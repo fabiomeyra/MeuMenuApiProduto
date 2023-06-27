@@ -6,7 +6,6 @@ using MeuMenu.Application.Interfaces;
 using MeuMenu.Application.ViewModels;
 using MeuMenu.Domain.Interfaces.Services;
 using MeuMenu.Domain.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
 namespace MeuMenu.Application.AppServices;
@@ -80,6 +79,12 @@ public class ProdutoAppService : IProdutoAppService
     {
         var produtos = await _produtoService.ObterProdutosAtivosAsync();
         return _mapper.Map<IEnumerable<ProdutoViewModel>>(produtos);
+    }
+
+    public async Task<ProdutoValorViewModel?> BuscarProdutoValorAsync(Guid produtoId)
+    {
+        var produto = await _produtoService.BuscarProdutoValorAsync(produtoId);
+        return _mapper.Map<ProdutoValorViewModel>(produto);
     }
 
     private async Task<string> EnviarImagemAzure(ProdutoAddViewModel produtoAddViewModel)

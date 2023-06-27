@@ -36,6 +36,16 @@ namespace MeuMenu.Api.Controllers
 
         }
 
+        [HttpGet("produto-valor")]
+        public async Task<IActionResult> BuscarProdutoValor([FromQuery] Guid id)
+        {
+            var produto = await _produtoAppService.BuscarProdutoValorAsync(id);
+            if (produto is not null) return RespostaPadrao(produto);
+            NotificarErro("Produto não encontrado.");
+            return RespostaPadrao();
+
+        }
+
         [HttpPost]
         public async Task<IActionResult> Adicionar([FromForm]ProdutoAddViewModel produtoAddViewModel)
         {

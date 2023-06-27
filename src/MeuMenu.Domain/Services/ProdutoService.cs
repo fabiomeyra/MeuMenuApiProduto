@@ -46,4 +46,6 @@ public class ProdutoService : IProdutoService
     {
         return await _produtoRepository.Buscar(p => p.ProdutoAtivo);
     }
+
+    public Task<Produto?> BuscarProdutoValorAsync(Guid produtoId) => _produtoRepository.BuscarProdutoValorAsync(produtoId);
 }
