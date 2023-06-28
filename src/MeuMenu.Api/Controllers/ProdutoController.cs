@@ -2,11 +2,13 @@
 using MeuMenu.Application.Interfaces;
 using MeuMenu.Application.ViewModels;
 using MeuMenu.Domain.Interfaces.Notificador;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MeuMenu.Api.Controllers
 {
     [ApiController]
+    [Authorize("Bearer")]
     [Route("api/produto")]
     public class ProdutoController : BaseController
     {
@@ -19,6 +21,7 @@ namespace MeuMenu.Api.Controllers
             _produtoAppService = produtoAppService;
         }
 
+        [AllowAnonymous]
         [HttpGet("obter-todos")]
         public async Task<IActionResult> ObterTodos()
         {
@@ -26,6 +29,7 @@ namespace MeuMenu.Api.Controllers
             return RespostaPadrao(retorno);
         }
 
+        [AllowAnonymous]
         [HttpGet("buscar-descricao-e-imagem")]
         public async Task<IActionResult> ObterTodos([FromQuery] ICollection<Guid> ids)
         {
@@ -33,6 +37,7 @@ namespace MeuMenu.Api.Controllers
             return RespostaPadrao(retorno);
         }
 
+        [AllowAnonymous]
         [HttpGet("obter-por-categoria/{categoriaId:int}")]
         public async Task<IActionResult> ObterTodos(int categoriaId)
         {
@@ -40,6 +45,7 @@ namespace MeuMenu.Api.Controllers
             return RespostaPadrao(retorno);
         }
 
+        [AllowAnonymous]
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> ObterPorId(Guid id)
         {
@@ -50,6 +56,7 @@ namespace MeuMenu.Api.Controllers
 
         }
 
+        [AllowAnonymous]
         [HttpGet("produto-valor")]
         public async Task<IActionResult> BuscarProdutoValor([FromQuery] Guid id)
         {
@@ -59,8 +66,9 @@ namespace MeuMenu.Api.Controllers
             return RespostaPadrao();
 
         }
-
+        
         [HttpPost]
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Adicionar([FromForm]ProdutoAddViewModel produtoAddViewModel)
         {
             var produtoViewModel = await _produtoAppService.AdicionarProdutoAsync(produtoAddViewModel);
@@ -68,6 +76,7 @@ namespace MeuMenu.Api.Controllers
         }
 
         [HttpPut("{id:guid}")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Atualizar(Guid id, [FromForm]ProdutoAddViewModel produtoAddViewModel)
         {
             if (id != produtoAddViewModel.ProdutoId)
@@ -83,6 +92,7 @@ namespace MeuMenu.Api.Controllers
         }
 
         [HttpDelete("{id:guid}")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Excluir(Guid id)
         {
             var produtoViewModel = await _produtoAppService.ObterProdutoPorIdAsync(id);
