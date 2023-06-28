@@ -26,6 +26,13 @@ namespace MeuMenu.Api.Controllers
             return RespostaPadrao(retorno);
         }
 
+        [HttpGet("buscar-descricao-e-imagem")]
+        public async Task<IActionResult> ObterTodos([FromQuery] ICollection<Guid> ids)
+        {
+            var retorno = await _produtoAppService.BuscarProdutoDescricaoEImagemAsync(ids);
+            return RespostaPadrao(retorno);
+        }
+
         [HttpGet("obter-por-categoria/{categoriaId:int}")]
         public async Task<IActionResult> ObterTodos(int categoriaId)
         {

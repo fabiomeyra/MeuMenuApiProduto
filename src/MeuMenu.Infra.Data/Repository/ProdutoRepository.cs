@@ -45,4 +45,18 @@ public class ProdutoRepository : Repository<Produto, MeuMenuDbContext>, IProduto
 
         return produto;
     }
+
+    public async Task<ICollection<Produto>> BuscarProdutoDescricaoEImagemAsync(ICollection<Guid> listaIds)
+    {
+        var produtos = await Db.Produtos
+            .Where(x => listaIds.Any(y => y == x.ProdutoId))
+            .Select(x => new Produto
+            {
+                ProdutoId = x.ProdutoId,
+                ProdutoDescricao = x.ProdutoDescricao,
+                ProdutoImagem = x.ProdutoImagem
+            }).ToListAsync();
+
+        return produtos;
+    }
 }

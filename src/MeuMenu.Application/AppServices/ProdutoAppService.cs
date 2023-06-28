@@ -94,6 +94,12 @@ public class ProdutoAppService : IProdutoAppService
         return _mapper.Map<ProdutoValorViewModel>(produto);
     }
 
+    public async Task<ICollection<ProdutoDescricaoImagemViewModel>> BuscarProdutoDescricaoEImagemAsync(ICollection<Guid> listaIds)
+    {
+        var produto = await _produtoService.BuscarProdutoDescricaoEImagemAsync(listaIds);
+        return _mapper.Map<ICollection<ProdutoDescricaoImagemViewModel>>(produto);
+    }
+
     private async Task<string> EnviarImagemAzure(ProdutoAddViewModel produtoAddViewModel)
     {
         var fileName = Guid.NewGuid() + ".jpg";

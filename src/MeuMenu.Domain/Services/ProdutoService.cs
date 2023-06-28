@@ -48,4 +48,7 @@ public class ProdutoService : IProdutoService
     }
 
     public Task<Produto?> BuscarProdutoValorAsync(Guid produtoId) => _produtoRepository.BuscarProdutoValorAsync(produtoId);
+
+    public Task<ICollection<Produto>> BuscarProdutoDescricaoEImagemAsync(ICollection<Guid> listaIds) =>
+        _produtoRepository.BuscarProdutoDescricaoEImagemAsync(listaIds);
 }

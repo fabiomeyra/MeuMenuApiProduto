@@ -12,4 +12,5 @@ public interface IProdutoAppService
     Task<IEnumerable<ProdutoViewModel>> ObterProdutosAtivosAsync();
     Task<ProdutoValorViewModel?> BuscarProdutoValorAsync(Guid produtoId);
     Task<IEnumerable<ProdutoViewModel>> ObterProdutosPorCategoriaAsync(int categoriaId);
+    Task<ICollection<ProdutoDescricaoImagemViewModel>> BuscarProdutoDescricaoEImagemAsync(ICollection<Guid> listaIds);
 }
