@@ -6,7 +6,8 @@ using MeuMenu.Application.Interfaces;
 using MeuMenu.Application.ViewModels;
 using MeuMenu.Domain.Interfaces.Services;
 using MeuMenu.Domain.Models;
-using Microsoft.Extensions.Configuration;
+using MeuMenu.Infra.CrossCutting.AppSettings;
+using Microsoft.Extensions.Options;
 
 namespace MeuMenu.Application.AppServices;
 
@@ -14,13 +15,16 @@ public class ProdutoAppService : IProdutoAppService
 {
     private readonly IProdutoService _produtoService;
     private readonly IMapper _mapper;
-    private readonly IConfiguration _configuration;
+    private readonly AppSettings _appSettings;
 
-    public ProdutoAppService(IProdutoService produtoService, IMapper mapper, IConfiguration configuration)
+    public ProdutoAppService(
+        IProdutoService produtoService, 
+        IMapper mapper, 
+        IOptions<AppSettings> op)
     {
         _produtoService = produtoService;
         _mapper = mapper;
-        _configuration = configuration;
+        _appSettings = op.Value;
     }
 
     public async Task<ProdutoViewModel> AdicionarProdutoAsync(ProdutoAddViewModel produtoAddViewModel)
@@ -102,10 +106,11 @@ public class ProdutoAppService : IProdutoAppService
 
     private async Task<string> EnviarImagemAzure(ProdutoAddViewModel produtoAddViewModel)
     {
+        if (produtoAddViewModel.ProdutoImagem == null) return null!;
         var fileName = Guid.NewGuid() + ".jpg";
         var imgbytes = await produtoAddViewModel.ProdutoImagem.ConvertIFormFileToByteArray();
 
-        var blobClient = new BlobClient(_configuration["Azure:ArmazenamentoImagens"], _configuration["Azure:NomePastaImagens"], fileName);
+        var blobClient = new BlobClient(_appSettings?.Azure?.ArmazenamentoImagens, _appSettings?.Azure?.NomePastaImagens, fileName);
 
         using (var stream = new MemoryStream(imgbytes))
         {

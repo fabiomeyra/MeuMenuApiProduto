@@ -4,5 +4,6 @@ public class AppSettings
 {
     public ConnectionStringAppSettings? ConnectionString { get; set; }
     public JwtAppSettings? Jwt { get; set; }
+    public AzureAppSettings? Azure { get; set; }
     public bool EhAmbienteDeProducao { get; set; }
 }

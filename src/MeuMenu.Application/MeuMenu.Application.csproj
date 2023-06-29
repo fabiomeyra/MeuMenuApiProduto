@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MeuMenu.Domain\MeuMenu.Domain.csproj" />
+    <ProjectReference Include="..\MeuMenu.Infra.CrossCutting\MeuMenu.Infra.CrossCutting.csproj" />
   </ItemGroup>
 
 </Project>
