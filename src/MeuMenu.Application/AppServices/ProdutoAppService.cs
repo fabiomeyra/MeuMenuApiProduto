@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
-using MeuMenu.Application.Extensions;
 using MeuMenu.Application.Interfaces;
 using MeuMenu.Application.ViewModels;
 using MeuMenu.Domain.Interfaces.Services;
@@ -64,7 +63,7 @@ public class ProdutoAppService : IProdutoAppService
     
     public async Task ExcluirProdutoAsync(Guid produtoId)
     {
-        await _produtoService.ExcluirProdutoAsync(produtoId);
+        await _produtoService.ExcluirProdutoAsync(new Produto { ProdutoId = produtoId});
     }
 
     public async Task<ProdutoViewModel?> ObterProdutoPorIdAsync(Guid produtoId)

@@ -2,6 +2,8 @@
 using MeuMenu.Domain.Interfaces.Services;
 using MeuMenu.Domain.Models;
 using MeuMenu.Domain.Services.Base;
+using MeuMenu.Domain.Utils;
+using MeuMenu.Domain.Validations;
 
 namespace MeuMenu.Domain.Services;
 
@@ -20,7 +22,7 @@ public class ProdutoService : IProdutoService
 
     public async Task<Produto> AdicionarProdutoAsync(Produto produto)
     {
-        // TODO: Criar validações e adicionar ao produto
+        produto.AdicionarValidacaoEntidade(_negocioService, new AdicionarProdutoValidation(this));
         await _negocioService.ExecutarValidacao();
         if (!_negocioService.EhValido()) return produto;
         
@@ -31,7 +33,7 @@ public class ProdutoService : IProdutoService
 
     public async Task<Produto> AtualizarProdutoAsync(Produto produto)
     {
-        // TODO: Criar validações e adicionar ao produto
+        produto.AdicionarValidacaoEntidade(_negocioService, new AtualizarProdutoValidation(this));
         await _negocioService.ExecutarValidacao();
         if (!_negocioService.EhValido()) return produto;
         
@@ -40,12 +42,12 @@ public class ProdutoService : IProdutoService
         return produto;
     }
 
-    public async Task ExcluirProdutoAsync(Guid produtoId)
+    public async Task ExcluirProdutoAsync(Produto produto)
     {
-        // TODO: Criar validações e adicionar ao produto
+        produto.AdicionarValidacaoEntidade(_negocioService, new ExcluirProdutoValidation());
         await _negocioService.ExecutarValidacao();
         if (!_negocioService.EhValido()) return;
-        await _produtoRepository.Remover(produtoId);
+        await _produtoRepository.Remover(produto.ProdutoId);
     }
 
     public async Task<Produto?> ObterProdutoPorIdAsync(Guid produtoId)
