@@ -54,7 +54,7 @@ public class ProdutoAppService : IProdutoAppService
     {
         var produto = _mapper.Map<Produto>(produtoAddViewModel);
 
-        if (produtoAddViewModel.ProdutoImagem is not null)
+        if (!string.IsNullOrEmpty(produtoAddViewModel.ProdutoImagem) && !produtoAddViewModel.ProdutoImagem.StartsWith("https"))
             produto.ProdutoImagem = await EnviarImagemAzure(produtoAddViewModel);
 
         produto = await _produtoService.AtualizarProdutoAsync(produto);
@@ -108,7 +108,7 @@ public class ProdutoAppService : IProdutoAppService
     {
         if (produtoAddViewModel.ProdutoImagem == null) return null!;
         var fileName = Guid.NewGuid() + ".jpg";
-        var imgbytes = await produtoAddViewModel.ProdutoImagem.ConvertIFormFileToByteArray();
+        var imgbytes = Convert.FromBase64String(produtoAddViewModel.ProdutoImagem);
 
         var blobClient = new BlobClient(_appSettings?.Azure?.ArmazenamentoImagens, _appSettings?.Azure?.NomePastaImagens, fileName);
 

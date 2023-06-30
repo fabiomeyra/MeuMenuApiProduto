@@ -69,7 +69,7 @@ namespace MeuMenu.Api.Controllers
         
         [HttpPost]
         [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> Adicionar([FromForm]ProdutoAddViewModel produtoAddViewModel)
+        public async Task<IActionResult> Adicionar(ProdutoAddViewModel produtoAddViewModel)
         {
             var produtoViewModel = await _produtoAppService.AdicionarProdutoAsync(produtoAddViewModel);
             return RespostaPadrao(produtoViewModel);
@@ -77,7 +77,7 @@ namespace MeuMenu.Api.Controllers
 
         [HttpPut("{id:guid}")]
         [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> Atualizar(Guid id, [FromForm]ProdutoAddViewModel produtoAddViewModel)
+        public async Task<IActionResult> Atualizar(Guid id, ProdutoAddViewModel produtoAddViewModel)
         {
             if (id != produtoAddViewModel.ProdutoId)
             {

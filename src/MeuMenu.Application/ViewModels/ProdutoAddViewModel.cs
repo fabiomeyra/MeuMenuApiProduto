@@ -13,6 +13,6 @@ public class ProdutoAddViewModel
     public int ProdutoCalorias { get; set; }
     public string? ProdutoAlergias { get; set; }
     public int CategoriaId { get; set; }
-    public IFormFile? ProdutoImagem { get; set; }
+    public string? ProdutoImagem { get; set; }
 
 }
